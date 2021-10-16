@@ -8,10 +8,42 @@ its value is strictly greater than the values of every node to its left: its val
 to the values of every node to its right; and its children nodes are either valid BST nodes themselves or None null .
 '''
 
+# Solution 1
+# On Average: O(Log(n)) Time | O(Log(n)) Space
+# Worst Case: O(n) Time | O(n) Space
 def findClosestValueInBst(tree, target):
-    # Write your code here.
-    pass
+    return findClosestValueInBstHelper(tree, target, float('inf'))
 
+def findClosestValueInBstHelper(tree, target, closest):
+    if tree is None:
+        return closest
+    if abs(closest - target) > abs(tree.value - target):
+        closest = tree.value
+    if tree.value < target:
+        return findClosestValueInBstHelper(tree.right, target, closest)
+    elif tree.value > target:
+        return findClosestValueInBstHelper(tree.left, target, closest)
+    else:
+        return closest
+
+# Solution 2
+# On Average: O(Log(n)) Time | O(1) Space
+# Worst Case: O(n) Time | O(1) Space
+def findClosestValueInBst1(tree, target):
+    return findClosestValueInBst1Helper(tree, target, float('inf'))
+
+def findClosestValueInBst1Helper(tree, target, closest):
+    current_node = tree
+    while current_node is not None:
+        if abs(current_node.value - target) < abs(target - closest):
+            closest = current_node.value
+        if current_node.value < target:
+            current_node = current_node.right
+        elif current_node.value > target:
+            current_node = current_node.left
+        else:
+            break
+    return closest
 
 # This is the class of the input tree. Do not edit.
 class BST:
@@ -19,3 +51,14 @@ class BST:
         self.value = value
         self.left = None
         self.right = None
+
+
+# This is the class of the input tree. Do not edit.
+
+
+class BST:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+
